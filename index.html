@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>SynCHMR</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/slider.css">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+</head>
+
+<body>
+    <div id="body">
+        <h1 id="title">SynCHMR: Synergistic Global-space Camera and <br>Human Reconstruction from Videos</h1>
+        <h2 id="author">
+            <a href="https://scholar.google.com/citations?user=nVKRaf4AAAAJ&hl=en">Yizhou Zhao</a><sup>1</sup>, 
+            <a href="https://tuanfeng.github.io/">Tuanfeng Yang Wang</a><sup>2</sup>, 
+            <a href="http://mlsp.cs.cmu.edu/people/bhiksha/">Bhiksha Raj</a><sup>1</sup>, 
+            <a href="https://xulabs.github.io/min-xu/">Min Xu</a><sup>1</sup>, 
+            <a href="https://jimeiyang.github.io/">Jimei Yang</a><sup>2</sup>, 
+            <a href="https://paulchhuang.wixsite.com/chhuang">Chun-Hao Paul Huang</a><sup>2</sup>
+        </h2>
+        <h3 id="affiliation">
+            <sup>1</sup>Carnegie Mellon University, <sup>2</sup>Adobe Research
+        </h3>
+        <h3 id="conference">
+            CVPR 2024
+        </h3>
+        <p style="max-width:1600px; margin:auto; text-align: justify; margin-bottom: 1em">
+        </p>
+        <table style="max-width:1600px;margin-left:auto;margin-right:auto;">
+            <tr>
+                <th>
+                    <p style="font-size:16px;">
+                        Input Video
+                    </p>
+                </th>
+                <th>
+                    <p style="font-size:16px;">
+                        Our SynCHMR
+                    </p>
+                </th>
+                <th>
+                    <p style="font-size:16px;">
+                        Camera Trajectory & Human Motion & Scene
+                    </p>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <video autoplay muted loop height="250">
+                        <source src="assets/davis/parkour_input.mp4">
+                    </video>
+                </th>
+                <th>
+                    <p style="font-size:16px;">
+                        <span>&#8594;</span>
+                    </p>
+                </th>
+                <th>
+                    <video autoplay muted loop height="250">
+                        <source src="assets/davis/parkour_static.mp4">
+                    </video>
+                </th>
+
+            </tr>
+        </table>
+        <!-- <div id="content">
+            <details>
+                <summary>Motivation</summary>
+                <div id="table-wrapper">
+                    <div id="table-scroll">
+                        <table style="width: 100%">
+                            <tr>
+                                <th colspan=3>
+                                    <p style="font-size:20px;">
+                                        How to reconstruct camera trajectory, human motion, and scene in one global
+                                        coordinate?
+                                    </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="left" colspan=3>
+                                    <p style="font-size:18px;">
+                                        1. Human-aware Metric SLAM for resolving <span style="color:orange">depth,
+                                            scale, and
+                                            dynamic</span> ambiguities
+                                    </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p style="font-size:16px;">
+                                        Input Video
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/parkour_input.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        DROID-SLAM [54] Reconstructions with<span style="color:orange"> Depth
+                                            Ambiguity<span>
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/parkour_slam.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        Our SynCHMR Reconstructions
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/parkour_cal.mp4">
+                                    </video>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p style="font-size:16px;">
+                                        Input Video
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/soapbox_input.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        DROID-SLAM [54] Reconstructions with<span style="color:orange"> Scale
+                                            Ambiguity<span>
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/soapbox_slam.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        Our SynCHMR Reconstructions
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/soapbox_cal.mp4">
+                                    </video>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p style="font-size:16px;">
+                                        Input Video
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/walking_input.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        DROID-SLAM [54] Reconstructions with<span style="color:orange"> Dynamic
+                                            Ambiguity<span>
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/walking_slam.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        Our SynCHMR Reconstructions
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/walking_cal.mp4">
+                                    </video>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="left" colspan=3>
+                                    <p style="font-size:18px;">
+                                        2. Scene-aware SMPL Denoising for enforcing <span
+                                            style="color:orange">spatiotemporal
+                                            coherencies</span> and applying <span style="color:orange">dynamic scene
+                                            constraints</span>
+                                    </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p style="font-size:16px;">
+                                        Input Video
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/parkour_input.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        SLAHMR [62] Reconstructions with <span style="color:orange">Static Scene<span>
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/parkour_slahmr.mp4">
+                                    </video>
+                                </th>
+                                <th>
+                                    <p style="font-size:16px">
+                                        Our SynCHMR Reconstructions with <span style="color:orange">Dynamic Scene</span>
+                                    </p>
+                                    <video autoplay muted loop height="250">
+                                        <source src="assets/davis/parkour_dynamic.mp4">
+                                    </video>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </details>
+            <details>
+                <summary>Method Overview</summary>
+                <p style="margin: 0px auto;width: 97%;font-size:20px; text-align: justify;">
+                    <br>
+                    SynCHMR comprises two phases. The first phase, Human-aware Metric SLAM, infers metric-scale camera
+                    poses and metric-scale point clouds by exploiting the camera-frame human prior. The second phase,
+                    Scene-aware SMPL Denoising, involves the conditional denoising of world-frame noisy SMPL parameters.
+                    These parameters, initialized by transforming from the camera frame, get refined through
+                    conditioning on the dynamic point clouds obtained in the first phase. The whole pipeline thus
+                    reconstructs humans, scene point clouds, and cameras harmoniously in a common world frame.
+                </p>
+                <img src="assets/image/pipeline.png">
+            </details>
+            <details>
+                <summary>Qualitative Results</summary>
+                <details>
+                    <summary>3DPW - downtown_walkBridge_01</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/3dpw/downtown_walkBridge_01_254_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/3dpw/downtown_walkBridge_01_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/3dpw/downtown_walkBridge_01_254_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>3DPW - downtown_walkDownhill_00</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/downtown_walkDownhill_00_59_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/downtown_walkDownhill_00_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/downtown_walkDownhill_00_59_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>3DPW - downtown_warmWelcome_00</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/downtown_warmWelcome_00_286_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/downtown_warmWelcome_00_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/downtown_warmWelcome_00_286_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>3DPW - outdoors_crosscountry_00</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_crosscountry_00_68_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_crosscountry_00_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_crosscountry_00_68_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>3DPW - outdoors_parcours_00</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_parcours_00_103_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_parcours_00_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_parcours_00_103_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>3DPW - outdoors_parcours_01</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_parcours_01_112_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_parcours_01_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="500">
+                                            <source src="assets/3dpw/outdoors_parcours_01_112_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>EgoBody - recording_20211002_S03_S18_01</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211002_S03_S18_01_70_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211002_S03_S18_01_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211002_S03_S18_01_70_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>EgoBody - recording_20211002_S03_S18_03</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211002_S03_S18_03_97_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211002_S03_S18_03_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211002_S03_S18_03_97_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>EgoBody - recording_20211004_S12_S20_04</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211004_S12_S20_04_332_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211004_S12_S20_04_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20211004_S12_S20_04_332_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>EgoBody - recording_20220215_S21_S22_01</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220215_S21_S22_01_175_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220215_S21_S22_01_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220215_S21_S22_01_175_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>EgoBody - recording_20220218_S23_S02_01</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220218_S23_S02_01_237_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220218_S23_S02_01_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220218_S23_S02_01_237_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>EgoBody - recording_20220218_S23_S02_02</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220218_S23_S02_02_265_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220218_S23_S02_02_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/egobody/recording_20220218_S23_S02_02_265_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>DAVIS - lady-running</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/lady-running_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/lady-running_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/lady-running_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>DAVIS - lindy-hop</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/lindy-hop_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/lindy-hop_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/lindy-hop_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>DAVIS - soapbox</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/soapbox_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/soapbox_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/soapbox_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>DAVIS - walking</summary>
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <table style="width: 100%;margin-left:auto;margin-right:auto;">
+                                <tr>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/walking_input.mp4">
+                                        </video>
+                                        <div>
+                                            Input
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/walking_slahmr.mp4">
+                                        </video>
+                                        <div>
+                                            SLAHMR [62]
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <video autoplay muted loop height="250">
+                                            <source src="assets/davis/walking_static.mp4">
+                                        </video>
+                                        <div>
+                                            Our SynCHMR
+                                        </div>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+            </details>
+            <!-- <details>
+                <summary>Quantitative Results</summary>
+                <div id="table-wrapper">
+                    <div id="table-scroll">
+                        <table style="width: 100%">
+                            <th colspan=2>
+                                <p style="font-size:20px;">
+                                    <b>SynCHMR attains the lowest PA-MPJPE, FA-MPJPE, and WA-MPJPE compared with
+                                        state-of-the-art approaches.</b>
+                                </p>
+                            </th>
+                            <tr>
+                                <th>
+                                    <img src="assets/image/3dpw.png" height="230">
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <img src="assets/image/egobody.png" height="320">
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="table-wrapper">
+                    <div id="table-scroll">
+                        <table style="width: 100%">
+                            <tr>
+                                <th colspan=2>
+                                    <p style="font-size:20px;">
+                                        Our ablation study shows the importance of human-awareness in SLAM and the
+                                        effectiveness
+                                        of scene conditioning in world-frame HMR.
+                                    </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <img src="assets/image/slam.png" height="250">
+                                </th>
+                                <th>
+                                    <img src="assets/image/smpl.png" height="360">
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </details> -->
+            <p class="section">&nbsp;</p>
+            <!--p class="section" id="bibtex"--><h2>Bibtex</h2><!--/p-->
+            <table border="0">
+                <tbody>
+                <pre style=" display: block;
+                    background: #eee;
+                    white-space: pre;
+                    -webkit-overflow-scrolling: touch;
+                    max-width: 100%;
+                    min-width: 100px;
+                    border-radius: 20px;
+                    text-align: left
+                    ">
+
+                @inproceedings{zhao2024synchmr,
+                    author    = {Zhao, Yizhou and Wang, Tuanfeng Y. and Raj, Bhiksha and Xu, Min and Yang, Jimei and Huang, Chun-Hao P.},
+                    title     = {Synergistic Global-space Camera and Human Reconstruction from Videos},
+                    journal   = {CVPR},
+                    year      = {2024},
+                }       
+                </pre>
+            </tbody>
+        </table>
+        </div> -->
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+</body>

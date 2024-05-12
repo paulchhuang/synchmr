@@ -1,0 +1,144 @@
+/* #body * {
+    border: 1px dashed blue;
+} */
+
+:root {
+    --text-color: #444;
+    --shadow: #999;
+}
+
+* {
+    font-family: sans-serif;
+    color: var(--text-color);
+}
+
+body {
+    background-color: #F9F9F9;
+}
+
+#body {
+    text-align: center;
+    margin: auto;
+    padding-top: 1em;
+}
+
+#title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    max-width: 80%;
+    margin: auto;
+}
+
+#conference {
+    color: #666;
+    font-weight: 100;
+}
+
+#content {
+    display: inline-block;
+    width: 80%;
+    min-width: 800px;
+    margin: auto;
+    border-right: 3px solid var(--shadow);
+    border-bottom: 3px solid var(--shadow);
+    border-radius: 1rem;
+    overflow: hidden;
+    background-color: white;
+}
+
+summary {
+    text-align: left;
+    font-size: 1.5rem;
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    background-color: #F3F3F3;
+}
+
+details>details {
+    margin: 0 2rem 0 2rem;
+    font-size: 1.25rem;
+}
+
+details details summary {
+    background-color: white;
+    border-bottom: 2px solid #999;
+}
+
+details details:last-child summary {
+    border-bottom: none;
+}
+
+details>img {
+    max-width: calc(100% - 2rem);
+    margin: 1rem;
+}
+
+#deepfashion img {
+    width: 512px;
+}
+
+#full_steps div {
+    width: 15% !important;
+    display: inline-block
+}
+
+#full_steps div * {
+    width: 100%;
+}
+
+
+.video_label {
+    display: inline-block;
+    width: 49%;
+}
+
+.video_label video {
+    display: block !important;
+    width: 100% !important;
+}
+
+#qualitative video {
+    width: 1024px;
+    max-width: 100%;
+}
+
+#more video {
+    width: 30%;
+}
+
+#failures video {
+    width: 100%;
+}
+
+#table-wrapper {
+    position: relative;
+}
+
+#table-scroll {
+    overflow: auto;
+    margin-top: 20px;
+}
+
+#table-wrapper table {
+    width: 100%;
+}
+
+#table-wrapper table * {
+    background: white;
+    color: black;
+}
+
+#table-wrapper table thead th .text {
+    position: absolute;
+    top: -20px;
+    z-index: 2;
+    height: 20px;
+    width: 35%;
+    border: 1px solid red;
+}
+
+/* Parent Container */
+.content_img {
+    position: relative;
+}
